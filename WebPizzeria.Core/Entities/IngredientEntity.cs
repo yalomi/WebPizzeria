@@ -4,9 +4,7 @@ public class IngredientEntity
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    public Guid PizzaId { get; set; }
-    public PizzaEntity Pizza { get; set; }
-    public IngredientEntity()
-    {   
-    }
+    
+    //many to many relationship with pizzas
+    public List<PizzaEntity> Pizzas{ get; set; } = new List<PizzaEntity>();
 }

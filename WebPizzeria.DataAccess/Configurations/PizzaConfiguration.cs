@@ -10,9 +10,11 @@ public class PizzaConfiguration : IEntityTypeConfiguration<PizzaEntity>
     {
         builder.HasKey(p => p.Id);
 
-        builder
-            .HasMany(a => a.Ingredients)
-            .WithOne(i => i.Pizza);
+        builder.HasMany(p => p.Carts)
+            .WithMany(c => c.Pizzas);
+
+        builder.HasMany(p => p.Ingredients)
+            .WithMany(i => i.Pizzas);
     }
 }
 
