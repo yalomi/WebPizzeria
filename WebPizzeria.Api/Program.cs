@@ -1,6 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using WebPizzeria.DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddDbContext<PizzaDbContext>(options 
+    => options.UseSqlite(builder.Configuration.GetConnectionString(nameof(PizzaDbContext))));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
