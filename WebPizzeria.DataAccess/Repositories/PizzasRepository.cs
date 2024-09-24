@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebPizzeria.Core.Dtos;
 using WebPizzeria.Core.Entities;
 
 namespace WebPizzeria.DataAccess.Repositories;
 
-public class PizzasRepository
+public class PizzasRepository : IPizzasRepository
 {
     private readonly PizzaDbContext _context;
     public PizzasRepository(PizzaDbContext context)
@@ -42,15 +43,19 @@ public class PizzasRepository
     }
 
     public async Task AddAsync(
-        Guid id, string name, decimal price, List<IngredientEntity> ingredients)
+        PizzaEntity pizzaEntity)
     {
         var pizza = new PizzaEntity
         {
-            Id = id,
-            Name = name,
-            BasePrice = price,
-            Ingredients = ingredients
+            Id = Guid.NewGuid(),
+            Name = pizzaDto.Name,
+            BasePrice = pizzaDto.BasePrice,
         };
+
+        foreach (var ingredientId in pizzaDto.IngredientsIds)
+        {
+            pizza.Ingredients.Add(new IngredientEntity { Id = ingredientId });
+        }
 
         await _context.Pizzas.AddAsync(pizza);
         await _context.SaveChangesAsync();

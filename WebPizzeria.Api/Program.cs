@@ -1,9 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using WebPizzeria.Api.Services;
 using WebPizzeria.DataAccess;
+using WebPizzeria.DataAccess.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddScoped<IPizzasRepository, PizzasRepository>();
+builder.Services.AddScoped<PizzaService>();
 
 builder.Services.AddDbContext<PizzaDbContext>(options 
     => options.UseSqlite(builder.Configuration.GetConnectionString(nameof(PizzaDbContext))));
