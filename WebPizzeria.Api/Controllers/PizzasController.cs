@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebPizzeria.Api.Services;
 using WebPizzeria.Core.Entities;
-using WebPizzeria.DataAccess.Configurations;
 
 namespace WebPizzeria.Api.Controllers;
 
@@ -9,10 +8,10 @@ namespace WebPizzeria.Api.Controllers;
 [Route("api/[controller]")]
 public class PizzasController : ControllerBase
 {
-    private readonly PizzaService _service;
-    public PizzasController(PizzaService service)
+    private readonly PizzaService _pizzaService;
+    public PizzasController(PizzaService pizzaService)
     {
-        _service = service;
+        _pizzaService = pizzaService;
     }
 
 }

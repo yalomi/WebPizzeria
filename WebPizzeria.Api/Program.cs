@@ -8,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddScoped<IPizzasRepository, PizzasRepository>();
+builder.Services.AddScoped<IIngredientsRepository, IngredientsRepository>();
 builder.Services.AddScoped<PizzaService>();
+builder.Services.AddScoped<IngredientService>();
 
 builder.Services.AddDbContext<PizzaDbContext>(options 
     => options.UseSqlite(builder.Configuration.GetConnectionString(nameof(PizzaDbContext))));
