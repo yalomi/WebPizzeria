@@ -22,8 +22,8 @@ public class PizzaService
         return await _repository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(Guid id, string name, decimal price, List<IngredientEntity> ingredients)
+    public async Task AddAsync(PizzaEntity pizzaEntity, List<IngredientEntity> ingredients)
     {
-        await _repository.AddAsync(id, name, price, ingredients);
+        await _repository.AddAsync(pizzaEntity, ingredients);
     }
 }

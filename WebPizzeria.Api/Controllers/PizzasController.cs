@@ -14,10 +14,5 @@ public class PizzasController : ControllerBase
     {
         _service = service;
     }
-    [HttpPost]
-    public async Task AddPizzaAsync(Guid id, string name, decimal price, List<IngredientEntity> ingredients)
-    {
-        await _service.AddAsync(id, name, price, ingredients);
-    }
 
 }

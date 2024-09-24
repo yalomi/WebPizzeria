@@ -43,19 +43,14 @@ public class PizzasRepository : IPizzasRepository
     }
 
     public async Task AddAsync(
-        PizzaEntity pizzaEntity)
+        PizzaEntity pizzaEntity, List<IngredientEntity> ingredients)
     {
         var pizza = new PizzaEntity
         {
             Id = Guid.NewGuid(),
-            Name = pizzaDto.Name,
-            BasePrice = pizzaDto.BasePrice,
+            Name = pizzaEntity.Name,
+            BasePrice = pizzaEntity.BasePrice,
         };
-
-        foreach (var ingredientId in pizzaDto.IngredientsIds)
-        {
-            pizza.Ingredients.Add(new IngredientEntity { Id = ingredientId });
-        }
 
         await _context.Pizzas.AddAsync(pizza);
         await _context.SaveChangesAsync();
