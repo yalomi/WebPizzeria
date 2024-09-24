@@ -9,8 +9,6 @@ namespace WebPizzeria.DataAccess.Repositories
         Task<PizzaEntity> GetByIdAsync(Guid id);
         Task<List<PizzaEntity>> GetByFilter(decimal price);
         Task<List<PizzaEntity>> GetByPage(int page, int pageSize);
-        Task AddAsync(PizzaEntity pizzaEntity, List<IngredientEntity> ingredients);
-        Task UpdateAsync(Guid id, string name, decimal price, List<IngredientEntity> ingredients);
-        Task DeleteAsync(Guid id);
+        public Task AddAsync(string name, decimal basePrice, List<Guid> ingredientIds);
     }
 }

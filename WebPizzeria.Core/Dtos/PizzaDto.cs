@@ -4,8 +4,8 @@ namespace WebPizzeria.Core.Dtos;
 
 public class PizzaDto
 {
-    public string Name { get; set; } = string.Empty;
-    public Size Size { get; set; } = Size.Small;
+    public Guid Id { get; set; }
+    public string? Name { get; set; }
     public decimal BasePrice { get; set; }
-    public List<Guid> IngredientsIds { get; set; } = new List<Guid>();
+    public List<Guid> IngredientIds { get; set; } = new();
 }

@@ -1,28 +1,31 @@
-﻿using WebPizzeria.Core.Entities;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
+using WebPizzeria.Core.Dtos;
+using WebPizzeria.Core.Entities;
 using WebPizzeria.DataAccess.Repositories;
 
 namespace WebPizzeria.Api.Services;
 
 public class PizzaService
 {
-    private readonly IPizzasRepository _repository;
+    private readonly IPizzasRepository _pizzaRepository;
     public PizzaService(IPizzasRepository repository)
     {
-        _repository = repository;
+        _pizzaRepository = repository;
     }
 
     public async Task<List<PizzaEntity>> GetAllPizzasAsync()
     {
-        return await _repository.GetAsync();
+        return await _pizzaRepository.GetAsync();
     }
 
     public async Task<PizzaEntity> GetByIdAsync(Guid id)
     {
-        return await _repository.GetByIdAsync(id);
+        return await _pizzaRepository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(PizzaEntity pizzaEntity, List<IngredientEntity> ingredients)
+    public async Task AddAsync(string name, decimal basePrice, List<Guid> ingredientIds)
     {
-        await _repository.AddAsync(pizzaEntity, ingredients);
+        await _pizzaRepository.AddAsync(name, basePrice, ingredientIds);
     }
 }
