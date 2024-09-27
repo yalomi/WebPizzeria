@@ -7,7 +7,5 @@ public class PostPizzaDto
 {
     public string Name { get; set; } = string.Empty;
     public decimal BasePrice { get; set; }
-
-    public List<int> IngredientIds = new List<int>();
     public List<string>? IngredientNames { get; set; }
 }

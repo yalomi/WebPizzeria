@@ -2,7 +2,6 @@
 using WebPizzeria.Api.Services;
 using WebPizzeria.Core.Dtos;
 using WebPizzeria.Core.Entities;
-using static System.Net.WebRequestMethods;
 
 namespace WebPizzeria.Api.Controllers;
 
@@ -15,12 +14,25 @@ public class PizzasController : ControllerBase
     {
         _pizzaService = pizzaService;
     }
+    [HttpGet]
+    public async Task<IActionResult> GetAllPizzasAsync()
+    {
+        var pizzas = await _pizzaService.GetAllAsync();
+        return Ok(pizzas);
+    }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<PizzaEntity>> GetPizzaById(Guid id)
+    {
+        return await _pizzaService.GetByIdAsync(id);
+    }
 
     [HttpPost]
-    public async Task AddPizzaAsync(PostPizzaDto postPizzaDto)
+    public async Task<ActionResult> AddPizzaAsync(PostPizzaDto postPizzaDto)
     {
         var pizza = await _pizzaService.AddAsync(postPizzaDto);
-        //http response
+        return Created(nameof(GetPizzaById), pizza);
     }
+
+
 
 }

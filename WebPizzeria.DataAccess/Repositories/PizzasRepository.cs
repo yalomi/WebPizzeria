@@ -44,17 +44,15 @@ public class PizzasRepository : IPizzasRepository
 
     public async Task<PizzaEntity> AddAsync(PizzaEntity pizza, List<string> ingredientNames)
     {
+        //at the beginning adding the pizza to the database without any ingredients
         await _context.Pizzas.AddAsync(pizza);
         _context.SaveChanges();
 
         var ingredients = _context.Ingredients.ToList();
-
         var foundIngredients = ingredients.Where(i => ingredientNames.Contains(i.Name)).ToList();
-        //_context.Attach(ingredients).State = EntityState.Unchanged;
 
-        //var entries = _context.ChangeTracker.Entries();
         pizza.Ingredients = foundIngredients;
-        //var entries2 = _context.ChangeTracker.Entries();
+
         _context.SaveChanges();
 
         return pizza;
