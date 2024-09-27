@@ -24,8 +24,16 @@ public class PizzaService
         return await _pizzaRepository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(string name, decimal basePrice, List<Guid> ingredientIds)
+    public async Task<PizzaEntity> AddAsync(PostPizzaDto postPizzaDto)
     {
-        await _pizzaRepository.AddAsync(name, basePrice, ingredientIds);
+        var pizza = new PizzaEntity
+        {
+            Id = Guid.NewGuid(),
+            Name = postPizzaDto.Name,
+            BasePrice = postPizzaDto.BasePrice,
+        };
+
+        var pizzaWithIngredients = await _pizzaRepository.AddAsync(pizza, postPizzaDto.IngredientNames);
+        return pizzaWithIngredients;
     }
 }

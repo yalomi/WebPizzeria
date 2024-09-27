@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebPizzeria.Api.Services;
+using WebPizzeria.Core.Dtos;
 using WebPizzeria.Core.Entities;
+using static System.Net.WebRequestMethods;
 
 namespace WebPizzeria.Api.Controllers;
 
@@ -15,9 +17,10 @@ public class PizzasController : ControllerBase
     }
 
     [HttpPost]
-    public async Task AddPizzaAsync(string name, decimal basePrice, List<Guid> ingredientIds)
+    public async Task AddPizzaAsync(PostPizzaDto postPizzaDto)
     {
-        await _pizzaService.AddAsync(name, basePrice, ingredientIds);
+        var pizza = await _pizzaService.AddAsync(postPizzaDto);
+        //http response
     }
 
 }

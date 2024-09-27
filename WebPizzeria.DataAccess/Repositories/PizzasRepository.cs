@@ -42,21 +42,22 @@ public class PizzasRepository : IPizzasRepository
             Take(pageSize).ToListAsync();
     }
 
-    public async Task AddAsync(string name, decimal basePrice, List<Guid> ingredientIds)
+    public async Task<PizzaEntity> AddAsync(PizzaEntity pizza, List<string> ingredientNames)
     {
-        var ingredients = _context.Ingredients
-            .Where(i => ingredientIds.Contains(i.Id)).ToList();
-
-        var newPizza = new PizzaEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = name,
-            BasePrice = basePrice,
-            Ingredients = ingredients
-        };
-
-        await _context.AddAsync(newPizza);
+        await _context.Pizzas.AddAsync(pizza);
         _context.SaveChanges();
+
+        var ingredients = _context.Ingredients.ToList();
+
+        var foundIngredients = ingredients.Where(i => ingredientNames.Contains(i.Name)).ToList();
+        //_context.Attach(ingredients).State = EntityState.Unchanged;
+
+        //var entries = _context.ChangeTracker.Entries();
+        pizza.Ingredients = foundIngredients;
+        //var entries2 = _context.ChangeTracker.Entries();
+        _context.SaveChanges();
+
+        return pizza;
     }
 
     public async Task UpdateAsync(
