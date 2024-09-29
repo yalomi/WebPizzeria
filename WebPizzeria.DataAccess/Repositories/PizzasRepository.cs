@@ -67,10 +67,16 @@ public class PizzasRepository : IPizzasRepository
     {
         var ingredients = _context.Ingredients.Where(i => pizzaDto.IngredientNames.Contains(i.Name)).ToList();
 
-        var pizza = await _context.Pizzas.Where(p => p.Id == id).ExecuteUpdateAsync(
-            s => s.SetProperty(p => p.Name, pizzaDto.Name)
-            .SetProperty(p => p.BasePrice, pizzaDto.BasePrice)
-            .SetProperty(p => p.Ingredients, ingredients));
+        var pizza = await _context.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+
+        pizza.Name = pizzaDto.Name;
+        pizza.BasePrice = pizzaDto.BasePrice;
+
+        pizza.Ingredients.Clear();
+        foreach (var ingredient in ingredients)
+        {
+            pizza.Ingredients.Add(ingredient); 
+        }
 
         await _context.SaveChangesAsync();
     }

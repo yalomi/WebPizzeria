@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Contracts;
 using WebPizzeria.Api.Services;
 using WebPizzeria.Core.Dtos;
 using WebPizzeria.Core.Entities;
@@ -24,14 +23,15 @@ public class PizzasController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<PizzaEntity>> GetPizzaById(Guid id)
     {
-        return await _pizzaService.GetByIdAsync(id);
+        var pizza = await _pizzaService.GetByIdAsync(id);
+        return Ok(pizza);
     }
 
     [HttpPost]
     public async Task<ActionResult> AddPizzaAsync(PostPizzaDto postPizzaDto)
     {
         var pizza = await _pizzaService.AddAsync(postPizzaDto);
-        return Created(nameof(GetPizzaById), pizza);
+        return CreatedAtAction(nameof(GetPizzaById), new { id = pizza.Id }, postPizzaDto);
     }
 
     [HttpPut("{id}")]
