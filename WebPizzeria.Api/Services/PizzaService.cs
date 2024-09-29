@@ -37,4 +37,9 @@ public class PizzaService
 
         return pizzaWithIngredients;
     }
+
+    public async Task UpdateAsync(Guid id, UpdatePizzaDto pizzaDto)
+    {
+        await _pizzaRepository.UpdatePizza(id, pizzaDto);
+    }
 }

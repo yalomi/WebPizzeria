@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Contracts;
 using WebPizzeria.Api.Services;
 using WebPizzeria.Core.Dtos;
 using WebPizzeria.Core.Entities;
@@ -33,6 +34,12 @@ public class PizzasController : ControllerBase
         return Created(nameof(GetPizzaById), pizza);
     }
 
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdatePizzaAsync([FromRoute] Guid id, [FromBody] UpdatePizzaDto pizzaDto)
+    {
+        await _pizzaService.UpdateAsync(id, pizzaDto);
 
+        return NoContent();
+    }
 
 }

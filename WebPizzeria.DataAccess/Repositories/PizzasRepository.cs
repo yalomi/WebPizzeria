@@ -58,16 +58,20 @@ public class PizzasRepository : IPizzasRepository
         return pizza;
     }
 
-    public async Task UpdateAsync(
-        Guid id, string name, decimal price, List<IngredientEntity> ingredients)
-    {
-        var pizza = await _context.Pizzas.Where(p => p.Id == id).ExecuteUpdateAsync(
-            s => s.SetProperty(p => p.Name, name).SetProperty(p => p.BasePrice, price).SetProperty(p => p.Ingredients, ingredients)
-        );
-    }
-
     public async Task DeleteAsync(Guid id)
     {
         await _context.Pizzas.Where(p => p.Id == id).ExecuteDeleteAsync();
+    }
+
+    public async Task UpdatePizza(Guid id, UpdatePizzaDto pizzaDto)
+    {
+        var ingredients = _context.Ingredients.Where(i => pizzaDto.IngredientNames.Contains(i.Name)).ToList();
+
+        var pizza = await _context.Pizzas.Where(p => p.Id == id).ExecuteUpdateAsync(
+            s => s.SetProperty(p => p.Name, pizzaDto.Name)
+            .SetProperty(p => p.BasePrice, pizzaDto.BasePrice)
+            .SetProperty(p => p.Ingredients, ingredients));
+
+        await _context.SaveChangesAsync();
     }
 }
