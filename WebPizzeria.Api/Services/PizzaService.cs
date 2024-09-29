@@ -42,4 +42,9 @@ public class PizzaService
     {
         await _pizzaRepository.UpdatePizza(id, pizzaDto);
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await _pizzaRepository.DeleteAsync(id);
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SQLitePCL;
 using WebPizzeria.Api.Services;
 using WebPizzeria.Core.Dtos;
 using WebPizzeria.Core.Entities;
@@ -42,4 +43,10 @@ public class PizzasController : ControllerBase
         return NoContent();
     }
 
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeletePizzaAsync([FromRoute] Guid id)
+    {
+        await _pizzaService.DeleteAsync(id);
+        return NoContent();
+    }
 }

@@ -11,5 +11,6 @@ namespace WebPizzeria.DataAccess.Repositories
         Task<List<PizzaEntity>> GetByPage(int page, int pageSize);
         Task<PizzaEntity> AddAsync(PizzaEntity pizza, List<string> ingredientNames);
         Task UpdatePizza(Guid id, UpdatePizzaDto pizzaDto);
+        Task DeleteAsync(Guid id);
     }
 }
