@@ -67,12 +67,13 @@ public class PizzasRepository : IPizzasRepository
     {
         var ingredients = _context.Ingredients.Where(i => pizzaDto.IngredientNames.Contains(i.Name)).ToList();
 
-        var pizza = await _context.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+        var pizza = await _context.Pizzas.Include(p => p.Ingredients).FirstOrDefaultAsync(p => p.Id == id); //with include works
 
         pizza.Name = pizzaDto.Name;
         pizza.BasePrice = pizzaDto.BasePrice;
 
         pizza.Ingredients.Clear();
+
         foreach (var ingredient in ingredients)
         {
             pizza.Ingredients.Add(ingredient); 
