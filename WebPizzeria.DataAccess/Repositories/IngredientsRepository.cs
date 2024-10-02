@@ -10,10 +10,22 @@ public class IngredientsRepository : IIngredientsRepository
     {
         _context = context;
     }
-    public async Task AddAsync(IngredientEntity entity)
+
+    public Task<List<IngredientEntity>> GetAllAsync()
+    {
+        var ingredients = _context.Ingredients
+            .Include(i => i.Pizzas)
+            .ToListAsync();
+        
+        return ingredients;
+    }
+
+    public async Task<IngredientEntity> AddAsync(IngredientEntity entity)
     {
         await _context.Ingredients.AddAsync(entity);
         await _context.SaveChangesAsync();
+
+        return entity;
     }
 
     public async Task DeleteAsync(Guid id)

@@ -9,7 +9,6 @@ public class PizzaDbContext : DbContext
     public PizzaDbContext(DbContextOptions<PizzaDbContext> options)
         : base(options)
     {
-        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

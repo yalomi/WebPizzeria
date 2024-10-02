@@ -14,11 +14,19 @@ public class IngredientsController : ControllerBase
         _ingredientService = ingredientService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetIngredients()
+    {
+        var ingredients = await _ingredientService.GetAsync();
+        return Ok(ingredients);
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddIngredient(string name)
     {
-        var ingredient = new IngredientEntity { Id = Guid.NewGuid(), Name = name };
-        await _ingredientService.AddAsync(ingredient);
+        
+        var ingredient = await _ingredientService.AddAsync(name);
+        
         string uri = $"/ingredients/{ingredient.Id}";
         return Created(uri, ingredient);
     }

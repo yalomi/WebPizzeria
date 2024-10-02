@@ -12,9 +12,17 @@ public class IngredientService
         _repository = repository;
     }
 
-    public async Task AddAsync(IngredientEntity entity)
+    public async Task<List<IngredientEntity>> GetAsync()
     {
-        await _repository.AddAsync(entity);
+        var ingredients = await _repository.GetAllAsync();
+        return ingredients;
+    }
+
+    public async Task<IngredientEntity> AddAsync(string name)
+    {
+        var ingredient = new IngredientEntity { Id = Guid.NewGuid(), Name = name };
+        var ingredientDto = await _repository.AddAsync(ingredient);
+        return ingredientDto;
     }
 
     public async Task DeleteAsync(Guid id)

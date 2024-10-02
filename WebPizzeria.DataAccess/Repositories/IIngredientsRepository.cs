@@ -4,7 +4,8 @@ namespace WebPizzeria.DataAccess.Repositories
 {
     public interface IIngredientsRepository
     {
-        Task AddAsync(IngredientEntity entity);
+        Task<List<IngredientEntity>> GetAllAsync();
+        Task<IngredientEntity> AddAsync(IngredientEntity entity);
         Task DeleteAsync(Guid id);
     }
 }

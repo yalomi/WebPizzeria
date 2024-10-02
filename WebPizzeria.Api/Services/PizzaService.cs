@@ -14,7 +14,7 @@ public class PizzaService
         _pizzaRepository = repository;
     }
 
-    public async Task<List<PizzaEntity>> GetAllAsync()
+    public async Task<List<PizzaDto>> GetAllAsync()
     {
         return await _pizzaRepository.GetAsync();
     }
@@ -38,9 +38,9 @@ public class PizzaService
         return pizzaWithIngredients;
     }
 
-    public async Task UpdateAsync(Guid id, UpdatePizzaDto pizzaDto)
+    public async Task UpdateAsync(Guid id, UpdatePizzaDto updatePizzaDto)
     {
-        await _pizzaRepository.UpdatePizza(id, pizzaDto);
+        await _pizzaRepository.UpdateAsync(id, updatePizzaDto);
     }
 
     public async Task DeleteAsync(Guid id)

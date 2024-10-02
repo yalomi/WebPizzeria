@@ -12,10 +12,25 @@ public class PizzasRepository : IPizzasRepository
         _context = context;
     }
 
-    public async Task<List<PizzaEntity>> GetAsync()
+    public async Task<List<PizzaDto>> GetAsync()
     {
-        return await _context.Pizzas.AsNoTracking().
-            OrderBy(p => p.Name).ToListAsync();
+        var pizzaDtos = new List<PizzaDto>();
+
+        var pizzas = _context.Pizzas
+            .Include(p => p.Ingredients)
+            .ToList();
+
+        foreach (var pizza in pizzas)
+        {
+            pizzaDtos.Add(new PizzaDto
+            {
+                Name = pizza.Name,
+                BasePrice = pizza.BasePrice,
+                IngredientNames = pizza.Ingredients.Select(i => i.Name).ToList()
+            });
+        }
+        
+        return pizzaDtos;
     }
 
     public async Task<PizzaEntity> GetByIdAsync(Guid id)
@@ -63,7 +78,7 @@ public class PizzasRepository : IPizzasRepository
         await _context.Pizzas.Where(p => p.Id == id).ExecuteDeleteAsync();
     }
 
-    public async Task UpdatePizza(Guid id, UpdatePizzaDto pizzaDto)
+    public async Task UpdateAsync(Guid id, UpdatePizzaDto pizzaDto)
     {
         var ingredients = _context.Ingredients.Where(i => pizzaDto.IngredientNames.Contains(i.Name)).ToList();
 

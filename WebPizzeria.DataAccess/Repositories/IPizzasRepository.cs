@@ -5,12 +5,12 @@ namespace WebPizzeria.DataAccess.Repositories
 {
     public interface IPizzasRepository
     {
-        Task<List<PizzaEntity>> GetAsync();
+        Task<List<PizzaDto>> GetAsync();
         Task<PizzaEntity> GetByIdAsync(Guid id);
         Task<List<PizzaEntity>> GetByFilter(decimal price);
         Task<List<PizzaEntity>> GetByPage(int page, int pageSize);
         Task<PizzaEntity> AddAsync(PizzaEntity pizza, List<string> ingredientNames);
-        Task UpdatePizza(Guid id, UpdatePizzaDto pizzaDto);
+        Task UpdateAsync(Guid id, UpdatePizzaDto pizzaDto);
         Task DeleteAsync(Guid id);
     }
 }

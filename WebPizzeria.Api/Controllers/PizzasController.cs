@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SQLitePCL;
 using WebPizzeria.Api.Services;
 using WebPizzeria.Core.Dtos;
 using WebPizzeria.Core.Entities;
@@ -15,12 +14,14 @@ public class PizzasController : ControllerBase
     {
         _pizzaService = pizzaService;
     }
+    
     [HttpGet]
     public async Task<IActionResult> GetAllPizzasAsync()
     {
         var pizzas = await _pizzaService.GetAllAsync();
         return Ok(pizzas);
     }
+    
     [HttpGet("{id}")]
     public async Task<ActionResult<PizzaEntity>> GetPizzaById(Guid id)
     {
@@ -32,13 +33,14 @@ public class PizzasController : ControllerBase
     public async Task<ActionResult> AddPizzaAsync(PostPizzaDto postPizzaDto)
     {
         var pizza = await _pizzaService.AddAsync(postPizzaDto);
+        
         return CreatedAtAction(nameof(GetPizzaById), new { id = pizza.Id }, postPizzaDto);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdatePizzaAsync([FromRoute] Guid id, [FromBody] UpdatePizzaDto pizzaDto)
+    public async Task<ActionResult> UpdatePizzaAsync([FromRoute] Guid id, [FromBody] UpdatePizzaDto updatePizzaDto)
     {
-        await _pizzaService.UpdateAsync(id, pizzaDto);
+        await _pizzaService.UpdateAsync(id, updatePizzaDto);
 
         return NoContent();
     }
