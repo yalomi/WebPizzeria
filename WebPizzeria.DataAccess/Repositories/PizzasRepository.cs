@@ -16,9 +16,10 @@ public class PizzasRepository : IPizzasRepository
     {
         var pizzaDtos = new List<PizzaDto>();
 
-        var pizzas = _context.Pizzas
+        var pizzas = await _context.Pizzas
+            .AsNoTracking()
             .Include(p => p.Ingredients)
-            .ToList();
+            .ToListAsync();
 
         foreach (var pizza in pizzas)
         {
@@ -33,9 +34,22 @@ public class PizzasRepository : IPizzasRepository
         return pizzaDtos;
     }
 
-    public async Task<PizzaEntity> GetByIdAsync(Guid id)
+    public async Task<PizzaDto> GetByIdAsync(Guid id)
     {
-        return await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+        var pizza = await _context.Pizzas
+            .AsNoTracking()
+            .Include(p => p.Ingredients)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        var pizzaDto = new PizzaDto
+        {
+            Name = pizza.Name,
+            BasePrice = pizza.BasePrice,
+
+            IngredientNames = pizza.Ingredients.Select(i => i.Name).ToList()
+        };
+
+        return pizzaDto;
     }
 
     public async Task<List<PizzaEntity>> GetByFilter(decimal price)
@@ -57,20 +71,18 @@ public class PizzasRepository : IPizzasRepository
             Take(pageSize).ToListAsync();
     }
 
-    public async Task<PizzaEntity> AddAsync(PizzaEntity pizza, List<string> ingredientNames)
+    public async Task<PizzaEntity> AddAsync(PizzaEntity pizzaWithoutIngredients, List<string> necessaryIngredientNames)
     {
-        //at the beginning adding the pizza to the database without any ingredients
-        await _context.Pizzas.AddAsync(pizza);
+        await _context.Pizzas.AddAsync(pizzaWithoutIngredients);
         _context.SaveChanges();
 
-        var ingredients = _context.Ingredients.ToList();
-        var foundIngredients = ingredients.Where(i => ingredientNames.Contains(i.Name)).ToList();
+        var foundIngredients = _context.Ingredients.Where(i => necessaryIngredientNames.Contains(i.Name)).ToList(); //_context.Ingredients.ToList??
 
-        pizza.Ingredients = foundIngredients;
+        pizzaWithoutIngredients.Ingredients = foundIngredients;
 
         _context.SaveChanges();
 
-        return pizza;
+        return pizzaWithoutIngredients;
     }
 
     public async Task DeleteAsync(Guid id)

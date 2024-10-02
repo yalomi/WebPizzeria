@@ -19,23 +19,33 @@ public class PizzaService
         return await _pizzaRepository.GetAsync();
     }
 
-    public async Task<PizzaEntity> GetByIdAsync(Guid id)
+    public async Task<PizzaDto> GetByIdAsync(Guid id)
     {
         return await _pizzaRepository.GetByIdAsync(id);
     }
 
-    public async Task<PizzaEntity> AddAsync(PostPizzaDto postPizzaDto)
+    public async Task<PostPizzaDto> AddAsync(PizzaDto postPizzaDto)
     {
-        var pizza = new PizzaEntity
+        var pizzaWithoutIngredients = new PizzaEntity
         {
             Id = Guid.NewGuid(),
             Name = postPizzaDto.Name,
             BasePrice = postPizzaDto.BasePrice,
         };
 
-        var pizzaWithIngredients = await _pizzaRepository.AddAsync(pizza, postPizzaDto.IngredientNames);
+        var necessaryIngredientNames = postPizzaDto.IngredientNames;
 
-        return pizzaWithIngredients;
+        var pizzaWithIngredients = await _pizzaRepository.AddAsync(pizzaWithoutIngredients, necessaryIngredientNames);
+
+        var pizzaDto = new PostPizzaDto
+        {
+            Id = pizzaWithIngredients.Id,
+            Name = pizzaWithIngredients.Name,
+            BasePrice = pizzaWithIngredients.BasePrice,
+            IngredientNames = pizzaWithIngredients.Ingredients.Select(p => p.Name).ToList()
+        };
+
+        return pizzaDto;
     }
 
     public async Task UpdateAsync(Guid id, UpdatePizzaDto updatePizzaDto)

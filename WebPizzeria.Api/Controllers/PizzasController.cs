@@ -30,11 +30,11 @@ public class PizzasController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddPizzaAsync(PostPizzaDto postPizzaDto)
+    public async Task<ActionResult> AddPizzaAsync(PizzaDto pizzaDto)
     {
-        var pizza = await _pizzaService.AddAsync(postPizzaDto);
+        var pizza = await _pizzaService.AddAsync(pizzaDto);
         
-        return CreatedAtAction(nameof(GetPizzaById), new { id = pizza.Id }, postPizzaDto);
+        return CreatedAtAction(nameof(GetPizzaById), new { id = pizza.Id }, pizza);
     }
 
     [HttpPut("{id}")]
