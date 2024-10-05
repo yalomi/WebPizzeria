@@ -49,6 +49,7 @@ public class PizzasController : ControllerBase
     public async Task<ActionResult> DeletePizzaAsync([FromRoute] Guid id)
     {
         await _pizzaService.DeleteAsync(id);
+
         return NoContent();
     }
 }

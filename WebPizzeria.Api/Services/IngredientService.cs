@@ -1,4 +1,5 @@
-﻿using WebPizzeria.Core.Entities;
+﻿using WebPizzeria.Core.Dtos;
+using WebPizzeria.Core.Entities;
 using WebPizzeria.DataAccess.Repositories;
 
 namespace WebPizzeria.Api.Services;
@@ -12,7 +13,7 @@ public class IngredientService
         _repository = repository;
     }
 
-    public async Task<List<IngredientEntity>> GetAsync()
+    public async Task<List<IngredientDto>> GetAsync()
     {
         var ingredients = await _repository.GetAllAsync();
         return ingredients;

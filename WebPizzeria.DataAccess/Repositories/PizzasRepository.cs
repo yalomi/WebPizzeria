@@ -16,10 +16,13 @@ public class PizzasRepository : IPizzasRepository
     {
         var pizzaDtos = new List<PizzaDto>();
 
-        var pizzas = await _context.Pizzas
+        var pizzas = await 
+            _context.Pizzas
             .AsNoTracking()
             .Include(p => p.Ingredients)
             .ToListAsync();
+        
+        var kdfjd = await _context.Pizzas.ToListAsync();
 
         foreach (var pizza in pizzas)
         {
