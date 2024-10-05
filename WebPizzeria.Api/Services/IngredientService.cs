@@ -19,11 +19,18 @@ public class IngredientService
         return ingredients;
     }
 
-    public async Task<IngredientEntity> AddAsync(string name)
+    public async Task<Tuple<IngredientDto, Guid>> AddAsync(string name)
     {
         var ingredient = new IngredientEntity { Id = Guid.NewGuid(), Name = name };
-        var ingredientDto = await _repository.AddAsync(ingredient);
-        return ingredientDto;
+        ingredient = await _repository.AddAsync(ingredient);
+
+        var ingredientDto = new IngredientDto
+        {
+            Name = ingredient.Name,
+            PizzaNames = ingredient.Pizzas.Select(p => p.Name).ToList()
+        };
+        
+        return new Tuple<IngredientDto, Guid>(ingredientDto, ingredient.Id);
     }
 
     public async Task DeleteAsync(Guid id)

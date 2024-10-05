@@ -38,8 +38,6 @@ public class IngredientsRepository : IIngredientsRepository
     {
         await _context.Ingredients.AddAsync(entity);
         await _context.SaveChangesAsync();
-        
-        
 
         return entity;
     }

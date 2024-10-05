@@ -25,10 +25,10 @@ public class IngredientsController : ControllerBase
     public async Task<IActionResult> AddIngredient(string name)
     {
         
-        var ingredient = await _ingredientService.AddAsync(name);
+        var ingredientWithId = await _ingredientService.AddAsync(name);
         
-        string uri = $"/ingredients/{ingredient.Id}";
-        return Created(uri, ingredient);
+        string uri = $"/ingredients/{ingredientWithId.Item2}";
+        return Created(uri, ingredientWithId.Item1);
     }
 
     [HttpDelete("{id}")]
